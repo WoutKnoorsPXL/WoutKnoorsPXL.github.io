@@ -8,9 +8,11 @@
         :root {
             --bg-color: #0f172a;
             --surface-color: #1e293b;
+            --surface-hover: #334155;
             --accent-color: #38bdf8;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
+            --text-muted: #64748b;
             --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
@@ -48,7 +50,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 40px 0;
         }
@@ -56,22 +58,38 @@
         section {
             margin-bottom: 60px;
             background-color: var(--surface-color);
-            padding: 30px;
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
         }
 
-        section:hover {
-            transform: translateY(-5px);
+        /* Unique transparent background for the showcase section to let cards pop */
+        #activiteiten-selectie {
+            background-color: transparent;
+            box-shadow: none;
+            padding: 0;
         }
 
         h3 {
             font-size: 2rem;
             color: var(--accent-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-left: 4px solid var(--accent-color);
             padding-left: 15px;
+        }
+
+        h4 {
+            font-size: 1.4rem;
+            color: #f1f5f9;
+            margin: 30px 0 15px 0;
+            border-bottom: 1px solid var(--surface-hover);
+            padding-bottom: 5px;
+        }
+
+        h5 {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-top: 15px;
         }
 
         p {
@@ -80,44 +98,128 @@
             font-size: 1.1rem;
         }
 
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        /* Short overview lists */
+        .overview-list {
+            list-style-type: none;
+            margin-bottom: 20px;
         }
 
-        .card {
+        .overview-list li {
             background-color: var(--bg-color);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-
-        .card h4 {
-            color: #f1f5f9;
-            font-size: 1.3rem;
+            padding: 15px 20px;
             margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--surface-hover);
+            transition: border-color 0.2s ease;
         }
 
-        ul {
+        .overview-list li:hover {
+            border-left-color: var(--accent-color);
+        }
+
+        .overview-list strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .overview-list span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* --- NEW ALTERNATING SHOWCASE LAYOUT --- */
+        .showcase-container {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            margin-top: 30px;
+        }
+
+        .showcase-row {
+            display: flex;
+            background-color: var(--surface-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid #334155;
+            min-height: 450px;
+        }
+
+        /* The magic rule that flips every second row */
+        .showcase-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .showcase-image {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            min-height: 300px;
+        }
+
+        /* A subtle gradient overlay over the images so they blend nicely */
+        .showcase-image::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to right, rgba(30, 41, 59, 0.8) 0%, transparent 50%);
+        }
+
+        .showcase-row:nth-child(even) .showcase-image::after {
+            background: linear-gradient(to left, rgba(30, 41, 59, 0.8) 0%, transparent 50%);
+        }
+
+        .showcase-content {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .showcase-content h4 {
+            border-bottom: none;
+            margin-top: 0;
+            color: var(--accent-color);
+            font-size: 2rem;
+        }
+
+        .card-list {
             list-style-type: none;
             padding-left: 0;
+            margin-top: 15px;
         }
 
-        li {
+        .card-list li {
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             padding-left: 20px;
             position: relative;
+            font-size: 1.05rem;
         }
 
-        li::before {
+        .card-list li::before {
             content: "▹";
             color: var(--accent-color);
             position: absolute;
             left: 0;
             top: 0;
+        }
+
+        /* Mobile responsiveness: stack them on small screens */
+        @media (max-width: 850px) {
+            .showcase-row,
+            .showcase-row:nth-child(even) {
+                flex-direction: column;
+            }
+            .showcase-image::after {
+                background: linear-gradient(to bottom, transparent 50%, rgba(30, 41, 59, 1) 100%) !important;
+            }
         }
 
         footer {
@@ -132,67 +234,116 @@
 <body>
 
     <header>
-        <h1>Wout Knoors [cite: 2]</h1>
-        <h2>PORTFOLIO I-Talent [cite: 1]</h2>
+        <h1>Wout Knoors</h1>
+        <h2>PORTFOLIO I-Talent</h2>
     </header>
 
     <div class="container">
         
         <section id="voorstelling">
-            <h3>Voorstelling [cite: 24]</h3>
-            <p>Ik ben begonnen met informatica in het middelbaar en ben daarmee door blijven gaan in deze opleiding. [cite: 25] Ik ben gemotiveerd door uitdagingen dus iedere dag waarop ik mezelf niet kan uitdagen met iets nieuw is een dag waarop ik niet heb geleefd. [cite: 29]</p>
-            <p>Mijn grootste talenten zijn mijn invloed op mensen, hoe goed ik ben in leidinggevende rollen, en mijn capaciteit en gierigheid voor bijleren. [cite: 30, 31] Ik interesseer mij in zowat alles: eerst wetenschappen, dan informatica, een GDPR consultant certificatie, een eigen jeugdbeweging opgestart en Japans beginnen leren. [cite: 28]</p>
-            <p>In mijn vrije tijd wil ik nog een cursus over ijzerbewerking doen en verdergaan in robotica. [cite: 33]</p>
+            <h3>Voorstelling</h3>
+            <p>Ik ben begonnen met informatica in het middelbaar en ben daarmee door blijven gaan in deze opleiding. Hoewel ik er door persoonlijke omstandigheden wat langer over heb gedaan, blijf ik eraan werken en verbeteren. Ik ben gemotiveerd door uitdagingen; iedere dag waarop ik mezelf niet kan uitdagen met iets nieuws is een dag waarop ik niet heb geleefd.</p>
+            <p>Mijn grootste talenten zijn mijn invloed op mensen, hoe goed ik ben in leidinggevende rollen, en mijn gigantische gierigheid voor bijleren. Ik interesseer mij in zowat alles: eerst wetenschappen, dan informatica, een GDPR consultant certificatie, een eigen jeugdbeweging opgestart en Japans beginnen leren.</p>
+            <p>In mijn vrije tijd wil ik nog een cursus over ijzerbewerking doen en verdergaan in robotica. In mijn toekomst hoop ik gewoon een comfortabele job te hebben waarmee ik genoeg verdien en tijd heb om al deze projecten te financieren.</p>
         </section>
 
-        <section id="activiteiten">
-            <h3>Selectie van activiteiten [cite: 137]</h3>
-            <div class="grid-cards">
+        <section id="overzicht">
+            <h3>Overzicht Activiteiten</h3>
+            <p>Een beknopt overzicht van alle gevolgde trajecten en sessies doorheen de opleiding.</p>
+
+            <h4>Verplichte Activiteiten</h4>
+            <h5>Seminaries</h5>
+            <ul class="overview-list">
+                <li><strong>Svelte: Cubernetically Enhanced Web Apps</strong> Leren over het gebruik van het Svelte systeem en de mogelijkheden hiervan. <span>Jidoka | Mei 2023</span></li>
+                <li><strong>Rapid app development</strong> Het ontwikkelen van een app met low-code environments en hoe deze het proces versnellen. <span>Inetum-Realdolmen | Maart 2023</span></li>
+                <li><strong>Crashcourse Design</strong> Regels en tips voor direct resultaat, affiches/social media uitwerken met Figma, en design voor webapplicaties. <span>Axxes | Maart 2023</span></li>
+                <li><strong>Flutter</strong> Het gebruik van het Flutter framework voor creatie van mobiele applicaties. <span>IT Licious | Maart 2023</span></li>
+                <li><strong>Open Source</strong> Risico's verbonden aan Open Source componenten en hoe Cegeka deze beheert. <span>Cegeka | Dec 2025</span></li>
+                <li><strong>De wereld van (Enterprise) UX</strong> Design patterns for business applications. <span>Inetum | Dec 2025</span></li>
+                <li><strong>Een bedrijf in bijberoep</strong> Wat als je afgestudeerd bent en je wil als zelfstandige iets bijverdienen. <span>PXL-Next | Nov 2025</span></li>
+                <li><strong>Quantum Machine Learning</strong> Hoe Quantum Computers gebruikt kunnen worden voor Machine/Deep Learning in een hybride aanpak. <span>Inetum | Nov 2024</span></li>
+            </ul>
+
+            <h5>Innovatie & Internationalisering</h5>
+            <ul class="overview-list">
+                <li><strong>Innovatieroute DDD</strong> Leren over Domain Driven Design en hoe dit in bedrijven wordt gebruikt. <span>Okt 2025</span></li>
+                <li><strong>Hackathon: Leviathan’s Ledger</strong> Met behulp van AI gegevens uit 18e eeuwse logboeken halen en een interactieve wereldkaart bouwen. <span>Cronos Group | Nov 2025</span></li>
+                <li><strong>BIP (Blended Intensive Program)</strong> Een week lang samenwerken met studenten uit Duitsland en Kroatië aan een AI-product. <span>Mei 2025</span></li>
+            </ul>
+
+            <h5>Persoonlijke Ontwikkeling</h5>
+            <ul class="overview-list">
+                <li><strong>Projectweek 2TIN</strong> Samenwerken met research groep om communicatie te verbeteren. <span>Feb 2023</span></li>
+                <li><strong>POP-sessie: Brein aan het werk!</strong> Invloed van gsm's op het werken van de hersenen. <span>Maart 2023</span></li>
+                <li><strong>POP-sessie: POPping</strong> Bespreken van het johari venster als communicatieframework. <span>Maart 2023</span></li>
+                <li><strong>POP-sessie: My Team and I</strong> Bespreken van de piramide van Lencioni en groepsopdrachten. <span>Okt 2025</span></li>
+            </ul>
+
+            <h4>Extra Activiteiten</h4>
+            <ul class="overview-list">
+                <li><strong>Cloud Legends by Kabisa (Seminarie)</strong> Introductie over cloud development, specifiek cloud native applicaties. <span>April 2023</span></li>
+                <li><strong>Online Jeugdbeweging NAP (Pers. Ontwikkeling)</strong> Eigen bedrijf gestart met vrienden om jongeren tijdens corona online en offline samen te brengen. <span>2020 - heden</span></li>
+                <li><strong>Vrijwilligerswerk D&D Belgium (Student Engagement)</strong> Geven van introductiesessies Dungeons & Dragons op FACTS in NL/ENG. <span>April</span></li>
+                <li><strong>Studentencommissie (Student Engagement)</strong> 3 jaar lang actief als brug tussen studenten en de opleiding. <span>2019 - 2022</span></li>
+            </ul>
+        </section>
+
+        <section id="activiteiten-selectie">
+            <h3 style="background-color: var(--surface-color); padding: 30px; border-radius: 12px; margin-bottom: 0;">Uitgelichte Activiteiten</h3>
+            
+            <div class="showcase-container">
                 
-                <div class="card">
-                    <h4>Online jeugdbeweging NAP [cite: 140]</h4>
-                    <p>Ik ben een eigen bedrijf gestart met 2 vrienden om jongeren voornamelijk studenten te helpen tijdens corona in contact te komen met mensen. [cite: 123]</p>
-                    <ul>
-                        <li>De hoofddoelstelling van NAP is en gaat altijd connectie blijven. [cite: 142]</li>
-                        <li>Mijn rol was als een soort “baas” gezien ik het meeste kennis had over bedrijfswerking. [cite: 147]</li>
-                        <li>Ik ben organisatorisch veel sterker geworden en heb veel bijgeleerd over recruiting en marketing. [cite: 173]</li>
-                    </ul>
+                <div class="showcase-row">
+                    <div class="showcase-image" style="background-image: url('NAP.jpeg');"></div>
+                    <div class="showcase-content">
+                        <h4>Online jeugdbeweging NAP</h4>
+                        <p>Mensen helpen connecties te maken geeft een gevoel van voldoening wat ik bij geen enkel ander ding ooit heb gevoeld. Ons team bestaat uit vrijwilligers, en mijn rol was voornamelijk als 'baas' gericht op bedrijfswerking en financiën.</p>
+                        <ul class="card-list">
+                            <li><strong>Realisatie:</strong> Organisatie van grote offline evenementen met sponsors zoals Redbull, bordspellen, en zeldzame consoles/VR.</li>
+                            <li><strong>Reflectie:</strong> Het was een hobbelige weg, zeker financieel en qua samenwerken met vrienden als businesspartners. Maar ik ben organisatorisch en qua leiderschap enorm gegroeid.</li>
+                            <li><strong>Trots:</strong> Ik heb geleerd hoe ik informatie moet vinden en gebruiken om steeds te verbeteren. Dit staat met trots op mijn CV.</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h4>Studentencommissie [cite: 186]</h4>
-                    <p>Gedurende de eerste drie jaar van mijn studies ben ik deel geweest van de studentencommissie. [cite: 188]</p>
-                    <ul>
-                        <li>In essentie was wat ik deed gewoon meetings bijwonen en een soort brug zijn tussen mijn klas en het opleidingshoofd. [cite: 191]</li>
-                        <li>Ik moest de ervaringen van mijn medestudenten proberen voortbrengen op een professionele manier. [cite: 192]</li>
-                        <li>Ik heb voornamelijk beter leren communiceren in een specifiek professionele context. [cite: 201, 202]</li>
-                    </ul>
+                <div class="showcase-row">
+                    <div class="showcase-image" style="background-image: url('Studentencommissie.jpeg');"></div>
+                    <div class="showcase-content">
+                        <h4>Studentencommissie</h4>
+                        <p>Gedurende de eerste drie jaar was ik de brug tussen mijn klas en het opleidingshoofd. Ik leerde de ongefilterde meningen van studenten om te vormen naar professionele, onderbouwde argumenten.</p>
+                        <ul class="card-list">
+                            <li><strong>Impact:</strong> Dit was een belangrijke houvast tijdens mijn moeilijke traject. Zien hoe de administratie echt luisterde, gaf me de motivatie om door te zetten.</li>
+                            <li><strong>Groei:</strong> Ondanks mijn autisme heb ik hier uitstekend leren communiceren in een professionele context en veel nuttige connecties opgebouwd.</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h4>Hackathon Leviathan's Ledger [cite: 207]</h4>
-                    <p>Een hackathon tijdens Hack the Future, gebaseerd op data-exploratie en visualisatie. [cite: 209]</p>
-                    <ul>
-                        <li>Je moest de paden van schepen voorstellen op een wereldkaart met behulp van oude logboeken. [cite: 209, 210]</li>
-                        <li>Ik ben heel erg sterk in het coderen en heb veel problemen snel kunnen oplossen door mijn voorkennis. [cite: 234]</li>
-                        <li>Het was een leerrijke ervaring en een hele leuke dag in Antwerpen met vrienden. [cite: 225]</li>
-                    </ul>
+                <div class="showcase-row">
+                    <div class="showcase-image" style="background-image: url('aquatopia-2025.jpg');"></div>
+                    <div class="showcase-content">
+                        <h4>Hackathon Leviathan's Ledger</h4>
+                        <p>Een uitdaging gebaseerd op data-exploratie waarbij we paden van 18e-eeuwse schepen en walvissen moesten visualiseren op een wereldkaart, vaak met incomplete data.</p>
+                        <ul class="card-list">
+                            <li><strong>Aanpak:</strong> Zonder voorbereiding was het even zweten, maar door mijn sterke codeer-skills en capaciteit om snel bij te leren, hebben we de achterstand perfect ingehaald.</li>
+                            <li><strong>Reflectie:</strong> Een ontzettend leuke dag in Antwerpen. Van alle verplichte opdrachten was dit degene die echt verfrissend en leerrijk aanvoelde.</li>
+                        </ul>
+                    </div>
                 </div>
 
             </div>
         </section>
 
         <section id="eindreflectie">
-            <h3>Eindreflectie [cite: 241]</h3>
-            <p>Ik wouw bijleren als student: iets nieuw zien, verse ideeën krijgen en nieuwe technologieën ontdekken, en dit is meer dan gelukt. [cite: 245, 246] Van een heel timide jonge ben ik gegaan naar iemand die weet wat hij kan, en weet hoe hij dat moet tonen aan de wereld. [cite: 248]</p>
-            <p>Mijn toekomst is iets wat ik al heel lang heb uitgestippeld: ik wil de coole onkel zijn van mijn familie met een robot in zijn garage die hij zelf heeft geprogrammeerd, en de onkel met een vrbril. [cite: 253, 254] Ik wil comfortabel genoeg zijn om al mijn projecten en leergierigheid te financieren. [cite: 255]</p>
-            <p>Mijn bedrijf alleen al toetst elk vlak van de Xfactor af: passie, ondernemend en innovatief (wie heeft al ooit een online jeugdbeweging gemaakt?), internationaal samenwerken en multidisciplinariteit. [cite: 258, 259, 260]</p>
+            <h3>Eindreflectie</h3>
+            <p>Mijn doel als student was simpel: bijleren. Iets nieuw zien, verse ideeën krijgen en nieuwe technologieën ontdekken. Dit is meer dan gelukt. Mijn traject is heel veel vallen en opstaan geweest, maar ik ben gegroeid van een heel timide jongen naar iemand die weet wat hij kan, en weet hoe hij dat moet tonen aan de wereld.</p>
+            <p>Mijn leergierigheid is mijn beste eigenschap. Van talen tot muziek, een bedrijf starten en vrijwilligerswerk; ik heb geen seconde spijt dat ik de 'feestjes' heb overgeslagen om me hierop te focussen. Ik zal projecten en vaardigheden blijven opnemen tot de dag dat ik alles kan of niet meer uit bed kan komen. En qua toekomst? Ik wil de coole onkel zijn met de zelfgeprogrammeerde robot en VR-bril in de garage, comfortabel genoeg om al mijn leergierigheid te financieren. </p>
+            <p>Mijn projecten bewijzen mijn <strong>X-Factor</strong>: Passie in waarom ik NAP startte, ondernemend/innovatief (een online jeugdbeweging maken), internationaal samenwerken via D&D Belgium, en multidisciplinair zijn als de boekhouder, elektricien én leider tegelijk. Ik heb hier nooit actief bij stilgestaan, maar het zit verweven in alles wat ik heb gedaan. The world is my oyster!</p>
         </section>
 
     </div>
 
     <footer>
-        <p>Ontworpen voor de I-Talent Evaluatie [cite: 1] • Wout Knoors [cite: 2]</p>
+        <p>Ontworpen voor de I-Talent Evaluatie • Wout Knoors</p>
     </footer>
 
 </body>
